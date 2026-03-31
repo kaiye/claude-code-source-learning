@@ -38,7 +38,7 @@ recovered/claude-code-original/
 
 ## 调研索引
 - [2026-03-31 · Source Recovery](./claude-code-routing-research/2026-03-31-source-recovery.md)
-- [2026-03-31 · Request Minimization And Routing](./claude-code-routing-research/2026-03-31-request-minimization-and-routing.md)
+- [2026-03-31 · Request Minimization And Routing](./claude-code-routing-research/2026-03-31-request-minimization-and-routing.md)（含 `claude()`：保登录态 + 隐藏 email + 请求瘦身）
 - [2026-03-31 · System Prompt Analysis (CN)](./claude-code-routing-research/2026-03-31-system-prompt-analysis-cn.md)
 
 ## 相关文件
