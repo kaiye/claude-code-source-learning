@@ -1,0 +1,1007 @@
+{
+  "mapPath": "node_modules/@anthropic-ai/claude-code/cli.js.map",
+  "outDir": "recovered/claude-code-original",
+  "totalSources": 4756,
+  "restored": 4756,
+  "skippedNull": 0,
+  "skippedUnsafe": 0,
+  "categories": [
+    {
+      "category": "src/utils",
+      "count": 564
+    },
+    {
+      "category": "src/components",
+      "count": 389
+    },
+    {
+      "category": "node_modules/@opentelemetry",
+      "count": 298
+    },
+    {
+      "category": "node_modules/lodash-es",
+      "count": 226
+    },
+    {
+      "category": "src/commands",
+      "count": 207
+    },
+    {
+      "category": "node_modules/@azure",
+      "count": 206
+    },
+    {
+      "category": "node_modules/@aws-sdk",
+      "count": 201
+    },
+    {
+      "category": "node_modules/highlight.js",
+      "count": 193
+    },
+    {
+      "category": "src/tools",
+      "count": 184
+    },
+    {
+      "category": "node_modules/@smithy",
+      "count": 142
+    },
+    {
+      "category": "src/services",
+      "count": 130
+    },
+    {
+      "category": "src/hooks",
+      "count": 104
+    },
+    {
+      "category": "node_modules/@anthropic-ai",
+      "count": 103
+    },
+    {
+      "category": "src/ink",
+      "count": 96
+    },
+    {
+      "category": "node_modules/undici",
+      "count": 96
+    },
+    {
+      "category": "node_modules/zod",
+      "count": 77
+    },
+    {
+      "category": "node_modules/yaml",
+      "count": 72
+    },
+    {
+      "category": "node_modules/@grpc",
+      "count": 67
+    },
+    {
+      "category": "node_modules/ajv",
+      "count": 61
+    },
+    {
+      "category": "node_modules/jsonwebtoken",
+      "count": 57
+    },
+    {
+      "category": "node_modules/axios",
+      "count": 56
+    },
+    {
+      "category": "node_modules/@mixmark-io",
+      "count": 53
+    },
+    {
+      "category": "node_modules/semver",
+      "count": 45
+    },
+    {
+      "category": "node_modules/node-forge",
+      "count": 42
+    },
+    {
+      "category": "node_modules/@typespec",
+      "count": 40
+    },
+    {
+      "category": "node_modules/google-auth-library",
+      "count": 35
+    },
+    {
+      "category": "node_modules/protobufjs",
+      "count": 34
+    },
+    {
+      "category": "node_modules/qrcode",
+      "count": 34
+    },
+    {
+      "category": "node_modules/sharp",
+      "count": 33
+    },
+    {
+      "category": "node_modules/xmlbuilder",
+      "count": 33
+    },
+    {
+      "category": "node_modules/@inquirer",
+      "count": 32
+    },
+    {
+      "category": "node_modules/flora-colossus",
+      "count": 32
+    },
+    {
+      "category": "src/bridge",
+      "count": 31
+    },
+    {
+      "category": "node_modules/galactus",
+      "count": 30
+    },
+    {
+      "category": "node_modules/zod-to-json-schema",
+      "count": 27
+    },
+    {
+      "category": "node_modules/parse5",
+      "count": 24
+    },
+    {
+      "category": "node_modules/gaxios",
+      "count": 23
+    },
+    {
+      "category": "node_modules/pngjs",
+      "count": 22
+    },
+    {
+      "category": "node_modules/@modelcontextprotocol",
+      "count": 21
+    },
+    {
+      "category": "src/constants",
+      "count": 21
+    },
+    {
+      "category": "node_modules/@ant",
+      "count": 20
+    },
+    {
+      "category": "src/skills",
+      "count": 20
+    },
+    {
+      "category": "src/cli",
+      "count": 19
+    },
+    {
+      "category": "node_modules/@aws-crypto",
+      "count": 18
+    },
+    {
+      "category": "node_modules/uuid",
+      "count": 16
+    },
+    {
+      "category": "node_modules/vscode-jsonrpc",
+      "count": 16
+    },
+    {
+      "category": "node_modules/ws",
+      "count": 14
+    },
+    {
+      "category": "src/keybindings",
+      "count": 14
+    },
+    {
+      "category": "node_modules/whatwg-url",
+      "count": 13
+    },
+    {
+      "category": "src/tasks",
+      "count": 12
+    },
+    {
+      "category": "src/types",
+      "count": 11
+    },
+    {
+      "category": "src/migrations",
+      "count": 11
+    },
+    {
+      "category": "node_modules/asynckit",
+      "count": 10
+    },
+    {
+      "category": "node_modules/@protobufjs",
+      "count": 10
+    },
+    {
+      "category": "node_modules/execa",
+      "count": 9
+    },
+    {
+      "category": "src/context",
+      "count": 9
+    },
+    {
+      "category": "node_modules/math-intrinsics",
+      "count": 8
+    },
+    {
+      "category": "src/entrypoints",
+      "count": 8
+    },
+    {
+      "category": "src/memdir",
+      "count": 8
+    },
+    {
+      "category": "node_modules/es-errors",
+      "count": 7
+    },
+    {
+      "category": "node_modules/get-stream",
+      "count": 7
+    },
+    {
+      "category": "node_modules/@alcalzone",
+      "count": 7
+    },
+    {
+      "category": "node_modules/diff",
+      "count": 7
+    },
+    {
+      "category": "node_modules/cli-highlight",
+      "count": 7
+    },
+    {
+      "category": "node_modules/commander",
+      "count": 7
+    },
+    {
+      "category": "node_modules/@growthbook",
+      "count": 6
+    },
+    {
+      "category": "node_modules/cross-spawn",
+      "count": 6
+    },
+    {
+      "category": "node_modules/jsonc-parser",
+      "count": 6
+    },
+    {
+      "category": "node_modules/proper-lockfile",
+      "count": 6
+    },
+    {
+      "category": "src/state",
+      "count": 6
+    },
+    {
+      "category": "src/buddy",
+      "count": 6
+    },
+    {
+      "category": "node_modules/picomatch",
+      "count": 6
+    },
+    {
+      "category": "node_modules/@xmldom",
+      "count": 6
+    },
+    {
+      "category": "node_modules/call-bind-apply-helpers",
+      "count": 5
+    },
+    {
+      "category": "node_modules/jws",
+      "count": 5
+    },
+    {
+      "category": "node_modules/cssfilter",
+      "count": 5
+    },
+    {
+      "category": "node_modules/xss",
+      "count": 5
+    },
+    {
+      "category": "src/vim",
+      "count": 5
+    },
+    {
+      "category": "node_modules/fast-uri",
+      "count": 4
+    },
+    {
+      "category": "node_modules/debug",
+      "count": 4
+    },
+    {
+      "category": "node_modules/chalk",
+      "count": 4
+    },
+    {
+      "category": "node_modules/human-signals",
+      "count": 4
+    },
+    {
+      "category": "node_modules/graceful-fs",
+      "count": 4
+    },
+    {
+      "category": "src/native-ts",
+      "count": 4
+    },
+    {
+      "category": "node_modules/string-width",
+      "count": 4
+    },
+    {
+      "category": "node_modules/detect-libc",
+      "count": 4
+    },
+    {
+      "category": "src/query",
+      "count": 4
+    },
+    {
+      "category": "src/remote",
+      "count": 4
+    },
+    {
+      "category": "node_modules/ajv-formats",
+      "count": 3
+    },
+    {
+      "category": "node_modules/get-proto",
+      "count": 3
+    },
+    {
+      "category": "node_modules/isexe",
+      "count": 3
+    },
+    {
+      "category": "node_modules/tr46",
+      "count": 3
+    },
+    {
+      "category": "node_modules/json-bigint",
+      "count": 3
+    },
+    {
+      "category": "node_modules/google-logging-utils",
+      "count": 3
+    },
+    {
+      "category": "node_modules/react-reconciler",
+      "count": 3
+    },
+    {
+      "category": "node_modules/wrap-ansi",
+      "count": 3
+    },
+    {
+      "category": "node_modules/shell-quote",
+      "count": 3
+    },
+    {
+      "category": "node_modules/color-convert",
+      "count": 3
+    },
+    {
+      "category": "node_modules/parse5-htmlparser2-tree-adapter",
+      "count": 3
+    },
+    {
+      "category": "node_modules/plist",
+      "count": 3
+    },
+    {
+      "category": "src/screens",
+      "count": 3
+    },
+    {
+      "category": "src/server",
+      "count": 3
+    },
+    {
+      "category": "node_modules/get-east-asian-width",
+      "count": 2
+    },
+    {
+      "category": "node_modules/gopd",
+      "count": 2
+    },
+    {
+      "category": "node_modules/has-symbols",
+      "count": 2
+    },
+    {
+      "category": "node_modules/function-bind",
+      "count": 2
+    },
+    {
+      "category": "node_modules/form-data",
+      "count": 2
+    },
+    {
+      "category": "node_modules/follow-redirects",
+      "count": 2
+    },
+    {
+      "category": "node_modules/npm-run-path",
+      "count": 2
+    },
+    {
+      "category": "node_modules/signal-exit",
+      "count": 2
+    },
+    {
+      "category": "node_modules/agent-base",
+      "count": 2
+    },
+    {
+      "category": "node_modules/https-proxy-agent",
+      "count": 2
+    },
+    {
+      "category": "node_modules/tslib",
+      "count": 2
+    },
+    {
+      "category": "node_modules/ecdsa-sig-formatter",
+      "count": 2
+    },
+    {
+      "category": "node_modules/default-browser",
+      "count": 2
+    },
+    {
+      "category": "node_modules/gcp-metadata",
+      "count": 2
+    },
+    {
+      "category": "node_modules/retry",
+      "count": 2
+    },
+    {
+      "category": "node_modules/react",
+      "count": 2
+    },
+    {
+      "category": "node_modules/stack-utils",
+      "count": 2
+    },
+    {
+      "category": "node_modules/supports-hyperlinks",
+      "count": 2
+    },
+    {
+      "category": "node_modules/chokidar",
+      "count": 2
+    },
+    {
+      "category": "src/plugins",
+      "count": 2
+    },
+    {
+      "category": "node_modules/jsonfile",
+      "count": 2
+    },
+    {
+      "category": "node_modules/@img",
+      "count": 2
+    },
+    {
+      "category": "node_modules/eventsource-parser",
+      "count": 2
+    },
+    {
+      "category": "node_modules/@commander-js",
+      "count": 2
+    },
+    {
+      "category": "src/upstreamproxy",
+      "count": 2
+    },
+    {
+      "category": "src/bootstrap",
+      "count": 1
+    },
+    {
+      "category": "node_modules/emoji-regex",
+      "count": 1
+    },
+    {
+      "category": "node_modules/ansi-regex",
+      "count": 1
+    },
+    {
+      "category": "node_modules/strip-ansi",
+      "count": 1
+    },
+    {
+      "category": "node_modules/fast-deep-equal",
+      "count": 1
+    },
+    {
+      "category": "node_modules/json-schema-traverse",
+      "count": 1
+    },
+    {
+      "category": "node_modules/delayed-stream",
+      "count": 1
+    },
+    {
+      "category": "node_modules/combined-stream",
+      "count": 1
+    },
+    {
+      "category": "node_modules/mime-types",
+      "count": 1
+    },
+    {
+      "category": "node_modules/es-object-atoms",
+      "count": 1
+    },
+    {
+      "category": "node_modules/es-define-property",
+      "count": 1
+    },
+    {
+      "category": "node_modules/dunder-proto",
+      "count": 1
+    },
+    {
+      "category": "node_modules/hasown",
+      "count": 1
+    },
+    {
+      "category": "node_modules/get-intrinsic",
+      "count": 1
+    },
+    {
+      "category": "node_modules/has-tostringtag",
+      "count": 1
+    },
+    {
+      "category": "node_modules/es-set-tostringtag",
+      "count": 1
+    },
+    {
+      "category": "node_modules/proxy-from-env",
+      "count": 1
+    },
+    {
+      "category": "node_modules/ms",
+      "count": 1
+    },
+    {
+      "category": "node_modules/has-flag",
+      "count": 1
+    },
+    {
+      "category": "node_modules/supports-color",
+      "count": 1
+    },
+    {
+      "category": "node_modules/dom-mutator",
+      "count": 1
+    },
+    {
+      "category": "node_modules/which",
+      "count": 1
+    },
+    {
+      "category": "node_modules/path-key",
+      "count": 1
+    },
+    {
+      "category": "node_modules/shebang-regex",
+      "count": 1
+    },
+    {
+      "category": "node_modules/shebang-command",
+      "count": 1
+    },
+    {
+      "category": "node_modules/strip-final-newline",
+      "count": 1
+    },
+    {
+      "category": "node_modules/mimic-fn",
+      "count": 1
+    },
+    {
+      "category": "node_modules/onetime",
+      "count": 1
+    },
+    {
+      "category": "node_modules/is-stream",
+      "count": 1
+    },
+    {
+      "category": "node_modules/merge-stream",
+      "count": 1
+    },
+    {
+      "category": "node_modules/env-paths",
+      "count": 1
+    },
+    {
+      "category": "node_modules/lru-cache",
+      "count": 1
+    },
+    {
+      "category": "src/schemas",
+      "count": 1
+    },
+    {
+      "category": "node_modules/@aws",
+      "count": 1
+    },
+    {
+      "category": "node_modules/fast-xml-parser",
+      "count": 1
+    },
+    {
+      "category": "node_modules/http-proxy-agent",
+      "count": 1
+    },
+    {
+      "category": "node_modules/safe-buffer",
+      "count": 1
+    },
+    {
+      "category": "node_modules/buffer-equal-constant-time",
+      "count": 1
+    },
+    {
+      "category": "node_modules/jwa",
+      "count": 1
+    },
+    {
+      "category": "node_modules/lodash.includes",
+      "count": 1
+    },
+    {
+      "category": "node_modules/lodash.isboolean",
+      "count": 1
+    },
+    {
+      "category": "node_modules/lodash.isinteger",
+      "count": 1
+    },
+    {
+      "category": "node_modules/lodash.isnumber",
+      "count": 1
+    },
+    {
+      "category": "node_modules/lodash.isplainobject",
+      "count": 1
+    },
+    {
+      "category": "node_modules/lodash.isstring",
+      "count": 1
+    },
+    {
+      "category": "node_modules/lodash.once",
+      "count": 1
+    },
+    {
+      "category": "node_modules/is-docker",
+      "count": 1
+    },
+    {
+      "category": "node_modules/is-inside-container",
+      "count": 1
+    },
+    {
+      "category": "node_modules/is-wsl",
+      "count": 1
+    },
+    {
+      "category": "node_modules/wsl-utils",
+      "count": 1
+    },
+    {
+      "category": "node_modules/define-lazy-prop",
+      "count": 1
+    },
+    {
+      "category": "node_modules/default-browser-id",
+      "count": 1
+    },
+    {
+      "category": "node_modules/run-applescript",
+      "count": 1
+    },
+    {
+      "category": "node_modules/bundle-name",
+      "count": 1
+    },
+    {
+      "category": "node_modules/open",
+      "count": 1
+    },
+    {
+      "category": "node_modules/extend",
+      "count": 1
+    },
+    {
+      "category": "node_modules/webidl-conversions",
+      "count": 1
+    },
+    {
+      "category": "node_modules/punycode",
+      "count": 1
+    },
+    {
+      "category": "node_modules/node-fetch",
+      "count": 1
+    },
+    {
+      "category": "node_modules/bignumber.js",
+      "count": 1
+    },
+    {
+      "category": "node_modules/base64-js",
+      "count": 1
+    },
+    {
+      "category": "node_modules/gtoken",
+      "count": 1
+    },
+    {
+      "category": "src/Tool.ts",
+      "count": 1
+    },
+    {
+      "category": "node_modules/ignore",
+      "count": 1
+    },
+    {
+      "category": "node_modules/tree-kill",
+      "count": 1
+    },
+    {
+      "category": "node_modules/is-unicode-supported",
+      "count": 1
+    },
+    {
+      "category": "node_modules/figures",
+      "count": 1
+    },
+    {
+      "category": "node_modules/auto-bind",
+      "count": 1
+    },
+    {
+      "category": "node_modules/ansi-styles",
+      "count": 1
+    },
+    {
+      "category": "node_modules/is-fullwidth-code-point",
+      "count": 1
+    },
+    {
+      "category": "node_modules/convert-to-spaces",
+      "count": 1
+    },
+    {
+      "category": "node_modules/code-excerpt",
+      "count": 1
+    },
+    {
+      "category": "node_modules/bidi-js",
+      "count": 1
+    },
+    {
+      "category": "node_modules/indent-string",
+      "count": 1
+    },
+    {
+      "category": "node_modules/cli-boxes",
+      "count": 1
+    },
+    {
+      "category": "node_modules/lodash.debounce",
+      "count": 1
+    },
+    {
+      "category": "node_modules/usehooks-ts",
+      "count": 1
+    },
+    {
+      "category": "src/ink.ts",
+      "count": 1
+    },
+    {
+      "category": "node_modules/readdirp",
+      "count": 1
+    },
+    {
+      "category": "node_modules/@pondwader",
+      "count": 1
+    },
+    {
+      "category": "node_modules/yoctocolors-cjs",
+      "count": 1
+    },
+    {
+      "category": "node_modules/cli-width",
+      "count": 1
+    },
+    {
+      "category": "node_modules/color-name",
+      "count": 1
+    },
+    {
+      "category": "node_modules/fflate",
+      "count": 1
+    },
+    {
+      "category": "node_modules/universalify",
+      "count": 1
+    },
+    {
+      "category": "node_modules/pretty-bytes",
+      "count": 1
+    },
+    {
+      "category": "node_modules/marked",
+      "count": 1
+    },
+    {
+      "category": "src/context.ts",
+      "count": 1
+    },
+    {
+      "category": "vendor/image-processor-src",
+      "count": 1
+    },
+    {
+      "category": "src/coordinator",
+      "count": 1
+    },
+    {
+      "category": "node_modules/eventsource",
+      "count": 1
+    },
+    {
+      "category": "node_modules/pkce-challenge",
+      "count": 1
+    },
+    {
+      "category": "node_modules/p-map",
+      "count": 1
+    },
+    {
+      "category": "node_modules/long",
+      "count": 1
+    },
+    {
+      "category": "node_modules/@js-sdsl",
+      "count": 1
+    },
+    {
+      "category": "node_modules/lodash.camelcase",
+      "count": 1
+    },
+    {
+      "category": "src/cost-tracker.ts",
+      "count": 1
+    },
+    {
+      "category": "node_modules/turndown",
+      "count": 1
+    },
+    {
+      "category": "src/tasks.ts",
+      "count": 1
+    },
+    {
+      "category": "src/voice",
+      "count": 1
+    },
+    {
+      "category": "vendor/audio-capture-src",
+      "count": 1
+    },
+    {
+      "category": "src/tools.ts",
+      "count": 1
+    },
+    {
+      "category": "src/query.ts",
+      "count": 1
+    },
+    {
+      "category": "src/outputStyles",
+      "count": 1
+    },
+    {
+      "category": "src/projectOnboardingState.ts",
+      "count": 1
+    },
+    {
+      "category": "src/history.ts",
+      "count": 1
+    },
+    {
+      "category": "vendor/modifiers-napi-src",
+      "count": 1
+    },
+    {
+      "category": "node_modules/dijkstrajs",
+      "count": 1
+    },
+    {
+      "category": "node_modules/asciichart",
+      "count": 1
+    },
+    {
+      "category": "src/commands.ts",
+      "count": 1
+    },
+    {
+      "category": "src/Task.ts",
+      "count": 1
+    },
+    {
+      "category": "node_modules/fuse.js",
+      "count": 1
+    },
+    {
+      "category": "src/assistant",
+      "count": 1
+    },
+    {
+      "category": "src/moreright",
+      "count": 1
+    },
+    {
+      "category": "src/costHook.ts",
+      "count": 1
+    },
+    {
+      "category": "src/replLauncher.tsx",
+      "count": 1
+    },
+    {
+      "category": "src/interactiveHelpers.tsx",
+      "count": 1
+    },
+    {
+      "category": "src/dialogLaunchers.tsx",
+      "count": 1
+    },
+    {
+      "category": "vendor/url-handler-src",
+      "count": 1
+    },
+    {
+      "category": "src/setup.ts",
+      "count": 1
+    },
+    {
+      "category": "src/QueryEngine.ts",
+      "count": 1
+    },
+    {
+      "category": "src/main.tsx",
+      "count": 1
+    }
+  ],
+  "generatedAt": "2026-03-31T10:27:11.267Z"
+}
