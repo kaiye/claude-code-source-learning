@@ -1,0 +1,982 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Buddy Pets Preview</title>
+  <style>
+    :root {
+      --bg: #0b0b0f;
+      --panel: #13131a;
+      --line: #2d2d3a;
+      --text: #e9e9f1;
+      --muted: #9a9ab2;
+      --accent: #b47bff;
+      --ok: #7ee787;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: radial-gradient(1200px 600px at 10% -10%, #24133c 0%, var(--bg) 45%) fixed;
+      color: var(--text);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    }
+    .wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      display: grid;
+      gap: 16px;
+    }
+    .card {
+      background: linear-gradient(180deg, #141422 0%, var(--panel) 100%);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 14px;
+    }
+    h1 { margin: 0 0 6px; font-size: 20px; }
+    .muted { color: var(--muted); font-size: 12px; }
+    .controls {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+      align-items: end;
+    }
+    label { display: grid; gap: 6px; font-size: 12px; color: var(--muted); }
+    select, input[type="number"], input[type="range"], button {
+      width: 100%;
+      background: #0f0f16;
+      border: 1px solid #373749;
+      color: var(--text);
+      border-radius: 8px;
+      padding: 8px 10px;
+      font: inherit;
+    }
+    input[type="checkbox"] { transform: translateY(2px); }
+    button {
+      cursor: pointer;
+      border-color: #4f4f67;
+      transition: 0.2s;
+    }
+    button:hover { border-color: var(--accent); color: #fff; }
+    .button-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: nowrap;
+      align-items: center;
+      justify-content: flex-start;
+      grid-column: span 2;
+    }
+    .button-row button {
+      flex: 0 0 auto;
+      width: auto;
+      min-width: max-content;
+      white-space: nowrap;
+      padding: 6px 12px;
+      line-height: 1.2;
+    }
+    .stage {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 14px;
+    }
+    .sprite {
+      border: 1px solid #3d3357;
+      border-radius: 10px;
+      padding: 12px;
+      background: #07070c;
+    }
+    pre {
+      margin: 0;
+      white-space: pre;
+      color: var(--accent);
+      line-height: 1.1;
+      font-size: 17px;
+      min-height: 140px;
+    }
+    .stats {
+      display: grid;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 10px;
+    }
+    .mini {
+      background: #09090f;
+      border: 1px solid #2f2f3b;
+      border-radius: 10px;
+      padding: 8px;
+    }
+    .mini h3 {
+      margin: 0 0 8px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+    }
+    .mini pre { font-size: 13px; min-height: 88px; }
+    .ok { color: var(--ok); }
+    .err { color: #ff7b72; }
+    @media (max-width: 800px) {
+      .stage { grid-template-columns: 1fr; }
+      pre { font-size: 15px; }
+      .button-row { grid-column: auto; flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>Claude Buddy 宠物预览器</h1>
+      <div class="muted">数据源：<code>all-buddy-sprites.json</code>。支持直接双击本地打开（file://）。若你手动删掉内嵌 JSON，再用 HTTP 服务模式。</div>
+    </div>
+
+    <div class="card controls" id="controls">
+      <label>Species
+        <select id="species"></select>
+      </label>
+      <label>Eye
+        <select id="eye">
+          <option>·</option>
+          <option>✦</option>
+          <option>×</option>
+          <option>◉</option>
+          <option>@</option>
+          <option>°</option>
+        </select>
+      </label>
+      <label>Hat
+        <select id="hat"></select>
+      </label>
+      <label>Rarity
+        <select id="rarity"></select>
+      </label>
+      <label>Mode
+        <select id="mode">
+          <option value="idle">idle (源码节奏)</option>
+          <option value="excited">excited (全帧循环)</option>
+          <option value="manual">manual (手动帧)</option>
+        </select>
+      </label>
+      <label>Frame (manual)
+        <input id="frame" type="range" min="0" max="2" value="0" />
+      </label>
+      <label>Tick(ms)
+        <input id="tickMs" type="number" min="50" max="3000" step="50" value="500" />
+      </label>
+      <label>Pet Hearts
+        <div><input id="hearts" type="checkbox" /> 显示 burst</div>
+      </label>
+      <div class="button-row">
+        <button id="toggle">暂停</button>
+        <button id="burst">触发 /buddy pet</button>
+        <button id="rollRarity">按概率抽稀有度</button>
+      </div>
+    </div>
+
+    <div class="card stage">
+      <div class="sprite">
+        <pre id="mainSprite"></pre>
+      </div>
+      <div class="stats">
+        <div id="status" class="muted">loading...</div>
+        <div>提示：<span class="muted">`-1` 帧为 blink，会把当前 eye 替换为 `-`。</span></div>
+        <div>提示：<span class="muted">Hat 只在顶行为空时覆盖（与源码一致）。</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2 style="margin-top:0;font-size:16px;">All Species Live Grid</h2>
+      <div class="grid" id="grid"></div>
+    </div>
+  </div>
+
+  <!-- EMBED_BUDDY_JSON_START -->
+  <script id="buddy-json" type="application/json">
+{
+  "generatedAt": "2026-04-01T02:46:15.934Z",
+  "sourceFiles": {
+    "sprites": "recovered/claude-code-original/src/buddy/sprites.ts",
+    "companionSprite": "recovered/claude-code-original/src/buddy/CompanionSprite.tsx",
+    "types": "recovered/claude-code-original/src/buddy/types.ts"
+  },
+  "speciesOrder": [
+    "duck",
+    "goose",
+    "blob",
+    "cat",
+    "dragon",
+    "octopus",
+    "owl",
+    "penguin",
+    "turtle",
+    "snail",
+    "ghost",
+    "axolotl",
+    "capybara",
+    "cactus",
+    "robot",
+    "rabbit",
+    "mushroom",
+    "chonk"
+  ],
+  "speciesCount": 18,
+  "frameCountPerSpecies": {
+    "duck": 3,
+    "goose": 3,
+    "blob": 3,
+    "cat": 3,
+    "dragon": 3,
+    "octopus": 3,
+    "owl": 3,
+    "penguin": 3,
+    "turtle": 3,
+    "snail": 3,
+    "ghost": 3,
+    "axolotl": 3,
+    "capybara": 3,
+    "cactus": 3,
+    "robot": 3,
+    "rabbit": 3,
+    "mushroom": 3,
+    "chonk": 3
+  },
+  "hats": {
+    "none": "",
+    "crown": "   \\\\^^^/    ",
+    "tophat": "   [___]    ",
+    "propeller": "    -+-     ",
+    "halo": "   (   )    ",
+    "wizard": "    /^\\\\     ",
+    "beanie": "   (___)    ",
+    "tinyduck": "    ,>      "
+  },
+  "idleSequence": [
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    -1,
+    0,
+    0,
+    2,
+    0,
+    0,
+    0
+  ],
+  "petHearts": [
+    "   ♥    ♥   ",
+    "  ♥  ♥   ♥  ",
+    " ♥   ♥  ♥   ",
+    "♥  ♥      ♥ ",
+    "·    ·   ·  "
+  ],
+  "tickSettings": {
+    "tickMs": 500,
+    "bubbleShowTicks": 20,
+    "fadeWindowTicks": 6,
+    "petBurstMs": 2500
+  },
+  "bodies": {
+    "duck": [
+      [
+        "            ",
+        "    __      ",
+        "  <({E} )___  ",
+        "   (  ._>   ",
+        "    `--´    "
+      ],
+      [
+        "            ",
+        "    __      ",
+        "  <({E} )___  ",
+        "   (  ._>   ",
+        "    `--´~   "
+      ],
+      [
+        "            ",
+        "    __      ",
+        "  <({E} )___  ",
+        "   (  .__>  ",
+        "    `--´    "
+      ]
+    ],
+    "goose": [
+      [
+        "            ",
+        "     ({E}>    ",
+        "     ||     ",
+        "   _(__)_   ",
+        "    ^^^^    "
+      ],
+      [
+        "            ",
+        "    ({E}>     ",
+        "     ||     ",
+        "   _(__)_   ",
+        "    ^^^^    "
+      ],
+      [
+        "            ",
+        "     ({E}>>   ",
+        "     ||     ",
+        "   _(__)_   ",
+        "    ^^^^    "
+      ]
+    ],
+    "blob": [
+      [
+        "            ",
+        "   .----.   ",
+        "  ( {E}  {E} )  ",
+        "  (      )  ",
+        "   `----´   "
+      ],
+      [
+        "            ",
+        "  .------.  ",
+        " (  {E}  {E}  ) ",
+        " (        ) ",
+        "  `------´  "
+      ],
+      [
+        "            ",
+        "    .--.    ",
+        "   ({E}  {E})   ",
+        "   (    )   ",
+        "    `--´    "
+      ]
+    ],
+    "cat": [
+      [
+        "            ",
+        "   /\\\\_/\\\\    ",
+        "  ( {E}   {E})  ",
+        "  (  ω  )   ",
+        "  (\")_(\")   "
+      ],
+      [
+        "            ",
+        "   /\\\\_/\\\\    ",
+        "  ( {E}   {E})  ",
+        "  (  ω  )   ",
+        "  (\")_(\")~  "
+      ],
+      [
+        "            ",
+        "   /\\\\-/\\\\    ",
+        "  ( {E}   {E})  ",
+        "  (  ω  )   ",
+        "  (\")_(\")   "
+      ]
+    ],
+    "dragon": [
+      [
+        "            ",
+        "  /^\\\\  /^\\\\  ",
+        " <  {E}  {E}  > ",
+        " (   ~~   ) ",
+        "  `-vvvv-´  "
+      ],
+      [
+        "            ",
+        "  /^\\\\  /^\\\\  ",
+        " <  {E}  {E}  > ",
+        " (        ) ",
+        "  `-vvvv-´  "
+      ],
+      [
+        "   ~    ~   ",
+        "  /^\\\\  /^\\\\  ",
+        " <  {E}  {E}  > ",
+        " (   ~~   ) ",
+        "  `-vvvv-´  "
+      ]
+    ],
+    "octopus": [
+      [
+        "            ",
+        "   .----.   ",
+        "  ( {E}  {E} )  ",
+        "  (______)  ",
+        "  /\\\\/\\\\/\\\\/\\\\  "
+      ],
+      [
+        "            ",
+        "   .----.   ",
+        "  ( {E}  {E} )  ",
+        "  (______)  ",
+        "  \\\\/\\\\/\\\\/\\\\/  "
+      ],
+      [
+        "     o      ",
+        "   .----.   ",
+        "  ( {E}  {E} )  ",
+        "  (______)  ",
+        "  /\\\\/\\\\/\\\\/\\\\  "
+      ]
+    ],
+    "owl": [
+      [
+        "            ",
+        "   /\\\\  /\\\\   ",
+        "  (({E})({E}))  ",
+        "  (  ><  )  ",
+        "   `----´   "
+      ],
+      [
+        "            ",
+        "   /\\\\  /\\\\   ",
+        "  (({E})({E}))  ",
+        "  (  ><  )  ",
+        "   .----.   "
+      ],
+      [
+        "            ",
+        "   /\\\\  /\\\\   ",
+        "  (({E})(-))  ",
+        "  (  ><  )  ",
+        "   `----´   "
+      ]
+    ],
+    "penguin": [
+      [
+        "            ",
+        "  .---.     ",
+        "  ({E}>{E})     ",
+        " /(   )\\\\    ",
+        "  `---´     "
+      ],
+      [
+        "            ",
+        "  .---.     ",
+        "  ({E}>{E})     ",
+        " |(   )|    ",
+        "  `---´     "
+      ],
+      [
+        "  .---.     ",
+        "  ({E}>{E})     ",
+        " /(   )\\\\    ",
+        "  `---´     ",
+        "   ~ ~      "
+      ]
+    ],
+    "turtle": [
+      [
+        "            ",
+        "   _,--._   ",
+        "  ( {E}  {E} )  ",
+        " /[______]\\\\ ",
+        "  ``    ``  "
+      ],
+      [
+        "            ",
+        "   _,--._   ",
+        "  ( {E}  {E} )  ",
+        " /[______]\\\\ ",
+        "   ``  ``   "
+      ],
+      [
+        "            ",
+        "   _,--._   ",
+        "  ( {E}  {E} )  ",
+        " /[======]\\\\ ",
+        "  ``    ``  "
+      ]
+    ],
+    "snail": [
+      [
+        "            ",
+        " {E}    .--.  ",
+        "  \\\\  ( @ )  ",
+        "   \\\\_`--´   ",
+        "  ~~~~~~~   "
+      ],
+      [
+        "            ",
+        "  {E}   .--.  ",
+        "  |  ( @ )  ",
+        "   \\\\_`--´   ",
+        "  ~~~~~~~   "
+      ],
+      [
+        "            ",
+        " {E}    .--.  ",
+        "  \\\\  ( @  ) ",
+        "   \\\\_`--´   ",
+        "   ~~~~~~   "
+      ]
+    ],
+    "ghost": [
+      [
+        "            ",
+        "   .----.   ",
+        "  / {E}  {E} \\\\  ",
+        "  |      |  ",
+        "  ~`~``~`~  "
+      ],
+      [
+        "            ",
+        "   .----.   ",
+        "  / {E}  {E} \\\\  ",
+        "  |      |  ",
+        "  `~`~~`~`  "
+      ],
+      [
+        "    ~  ~    ",
+        "   .----.   ",
+        "  / {E}  {E} \\\\  ",
+        "  |      |  ",
+        "  ~~`~~`~~  "
+      ]
+    ],
+    "axolotl": [
+      [
+        "            ",
+        "}~(______)~{",
+        "}~({E} .. {E})~{",
+        "  ( .--. )  ",
+        "  (_/  \\\\_)  "
+      ],
+      [
+        "            ",
+        "~}(______){~",
+        "~}({E} .. {E}){~",
+        "  ( .--. )  ",
+        "  (_/  \\\\_)  "
+      ],
+      [
+        "            ",
+        "}~(______)~{",
+        "}~({E} .. {E})~{",
+        "  (  --  )  ",
+        "  ~_/  \\\\_~  "
+      ]
+    ],
+    "capybara": [
+      [
+        "            ",
+        "  n______n  ",
+        " ( {E}    {E} ) ",
+        " (   oo   ) ",
+        "  `------´  "
+      ],
+      [
+        "            ",
+        "  n______n  ",
+        " ( {E}    {E} ) ",
+        " (   Oo   ) ",
+        "  `------´  "
+      ],
+      [
+        "    ~  ~    ",
+        "  u______n  ",
+        " ( {E}    {E} ) ",
+        " (   oo   ) ",
+        "  `------´  "
+      ]
+    ],
+    "cactus": [
+      [
+        "            ",
+        " n  ____  n ",
+        " | |{E}  {E}| | ",
+        " |_|    |_| ",
+        "   |    |   "
+      ],
+      [
+        "            ",
+        "    ____    ",
+        " n |{E}  {E}| n ",
+        " |_|    |_| ",
+        "   |    |   "
+      ],
+      [
+        " n        n ",
+        " |  ____  | ",
+        " | |{E}  {E}| | ",
+        " |_|    |_| ",
+        "   |    |   "
+      ]
+    ],
+    "robot": [
+      [
+        "            ",
+        "   .[||].   ",
+        "  [ {E}  {E} ]  ",
+        "  [ ==== ]  ",
+        "  `------´  "
+      ],
+      [
+        "            ",
+        "   .[||].   ",
+        "  [ {E}  {E} ]  ",
+        "  [ -==- ]  ",
+        "  `------´  "
+      ],
+      [
+        "     *      ",
+        "   .[||].   ",
+        "  [ {E}  {E} ]  ",
+        "  [ ==== ]  ",
+        "  `------´  "
+      ]
+    ],
+    "rabbit": [
+      [
+        "            ",
+        "   (\\\\__/)   ",
+        "  ( {E}  {E} )  ",
+        " =(  ..  )= ",
+        "  (\")__(\")  "
+      ],
+      [
+        "            ",
+        "   (|__/)   ",
+        "  ( {E}  {E} )  ",
+        " =(  ..  )= ",
+        "  (\")__(\")  "
+      ],
+      [
+        "            ",
+        "   (\\\\__/)   ",
+        "  ( {E}  {E} )  ",
+        " =( .  . )= ",
+        "  (\")__(\")  "
+      ]
+    ],
+    "mushroom": [
+      [
+        "            ",
+        " .-o-OO-o-. ",
+        "(__________)",
+        "   |{E}  {E}|   ",
+        "   |____|   "
+      ],
+      [
+        "            ",
+        " .-O-oo-O-. ",
+        "(__________)",
+        "   |{E}  {E}|   ",
+        "   |____|   "
+      ],
+      [
+        "   . o  .   ",
+        " .-o-OO-o-. ",
+        "(__________)",
+        "   |{E}  {E}|   ",
+        "   |____|   "
+      ]
+    ],
+    "chonk": [
+      [
+        "            ",
+        "  /\\\\    /\\\\  ",
+        " ( {E}    {E} ) ",
+        " (   ..   ) ",
+        "  `------´  "
+      ],
+      [
+        "            ",
+        "  /\\\\    /|  ",
+        " ( {E}    {E} ) ",
+        " (   ..   ) ",
+        "  `------´  "
+      ],
+      [
+        "            ",
+        "  /\\\\    /\\\\  ",
+        " ( {E}    {E} ) ",
+        " (   ..   ) ",
+        "  `------´~ "
+      ]
+    ]
+  }
+}
+  </script>
+  <!-- EMBED_BUDDY_JSON_END -->
+  <script>
+    const els = {
+      species: document.getElementById('species'),
+      eye: document.getElementById('eye'),
+      hat: document.getElementById('hat'),
+      rarity: document.getElementById('rarity'),
+      mode: document.getElementById('mode'),
+      frame: document.getElementById('frame'),
+      tickMs: document.getElementById('tickMs'),
+      hearts: document.getElementById('hearts'),
+      toggle: document.getElementById('toggle'),
+      burst: document.getElementById('burst'),
+      rollRarity: document.getElementById('rollRarity'),
+      mainSprite: document.getElementById('mainSprite'),
+      status: document.getElementById('status'),
+      grid: document.getElementById('grid')
+    };
+
+    const state = {
+      data: null,
+      tick: 0,
+      timer: null,
+      playing: true,
+      petStartTick: null,
+    };
+
+    const RARITY_META = {
+      // Mirrors recovered source:
+      // recovered/claude-code-original/src/buddy/types.ts (RARITY_WEIGHTS + RARITY_COLORS)
+      common: { weight: 60, color: '#666666', stars: '★', themeToken: 'inactive' },
+      uncommon: { weight: 25, color: '#2c7a39', stars: '★★', themeToken: 'success' },
+      rare: { weight: 10, color: '#5769f7', stars: '★★★', themeToken: 'permission' },
+      epic: { weight: 4, color: '#8700ff', stars: '★★★★', themeToken: 'autoAccept' },
+      legendary: { weight: 1, color: '#966c1e', stars: '★★★★★', themeToken: 'warning' },
+    };
+    const RARITY_ORDER = ['common', 'uncommon', 'rare', 'epic', 'legendary'];
+
+    function currentRarity() {
+      return els.rarity.value || 'common';
+    }
+
+    function rarityColor(rarity) {
+      return RARITY_META[rarity]?.color || '#b47bff';
+    }
+
+    function rarityStars(rarity) {
+      return RARITY_META[rarity]?.stars || '';
+    }
+
+    function rollWeightedRarity() {
+      const total = RARITY_ORDER.reduce((sum, r) => sum + RARITY_META[r].weight, 0);
+      let x = Math.random() * total;
+      for (const r of RARITY_ORDER) {
+        x -= RARITY_META[r].weight;
+        if (x < 0) return r;
+      }
+      return 'common';
+    }
+
+    function capitalize(s) {
+      return s.charAt(0).toUpperCase() + s.slice(1);
+    }
+
+    function renderSpriteLines(species, frameIdx, blink) {
+      const { bodies, hats } = state.data;
+      const frames = bodies[species];
+      const eye = els.eye.value;
+      const hat = els.hat.value;
+      const body = frames[frameIdx % frames.length].map(line => line.replaceAll('{E}', eye));
+      const lines = [...body];
+
+      if (hat !== 'none' && !lines[0].trim()) {
+        lines[0] = hats[hat] || '';
+      }
+
+      const allTopBlank = frames.every(f => !(f[0] || '').trim());
+      if (!lines[0].trim() && allTopBlank) {
+        lines.shift();
+      }
+
+      if (blink) {
+        for (let i = 0; i < lines.length; i++) {
+          lines[i] = lines[i].replaceAll(eye, '-');
+        }
+      }
+
+      return lines;
+    }
+
+    function frameForSpecies(species) {
+      const frameCount = state.data.frameCountPerSpecies[species];
+      const mode = els.mode.value;
+      let blink = false;
+      let frame = 0;
+
+      if (mode === 'manual') {
+        frame = Number(els.frame.value) % frameCount;
+      } else if (mode === 'excited') {
+        frame = state.tick % frameCount;
+      } else {
+        const seq = state.data.idleSequence;
+        const step = seq[state.tick % seq.length];
+        if (step === -1) {
+          frame = 0;
+          blink = true;
+        } else {
+          frame = step % frameCount;
+        }
+      }
+
+      return { frame, blink };
+    }
+
+    function heartLine() {
+      if (!els.hearts.checked || state.petStartTick === null) return null;
+      const elapsedMs = (state.tick - state.petStartTick) * Number(els.tickMs.value);
+      if (elapsedMs >= state.data.tickSettings.petBurstMs) return null;
+      const hearts = state.data.petHearts;
+      return hearts[(state.tick - state.petStartTick) % hearts.length];
+    }
+
+    function renderMain() {
+      const species = els.species.value;
+      const rarity = currentRarity();
+      const color = rarityColor(rarity);
+      const { frame, blink } = frameForSpecies(species);
+      const lines = renderSpriteLines(species, frame, blink);
+      const h = heartLine();
+      const out = h ? [h, ...lines] : lines;
+      els.mainSprite.textContent = out.join('\n');
+      els.mainSprite.style.color = color;
+      document.documentElement.style.setProperty('--accent', color);
+
+      els.status.innerHTML = [
+        `<span class="ok">ready</span>`,
+        `species=<code>${species}</code>`,
+        `rarity=<code>${rarity}</code>`,
+        `stars=<code>${rarityStars(rarity)}</code>`,
+        `theme=<code>${RARITY_META[rarity]?.themeToken || 'autoAccept'}</code>`,
+        `frame=<code>${frame}</code>`,
+        `blink=<code>${blink}</code>`,
+        `tick=<code>${state.tick}</code>`,
+        `playing=<code>${state.playing}</code>`
+      ].join(' · ');
+    }
+
+    function renderGrid() {
+      const rarity = currentRarity();
+      const color = rarityColor(rarity);
+      const frag = document.createDocumentFragment();
+      for (const species of state.data.speciesOrder) {
+        const { frame, blink } = frameForSpecies(species);
+        const lines = renderSpriteLines(species, frame, blink);
+        const h = heartLine();
+        const out = h ? [h, ...lines] : lines;
+
+        const card = document.createElement('div');
+        card.className = 'mini';
+        card.style.borderColor = color;
+        const h3 = document.createElement('h3');
+        h3.textContent = `${capitalize(species)} (${species})`;
+        h3.style.color = color;
+        const pre = document.createElement('pre');
+        pre.style.color = color;
+        pre.textContent = out.join('\n');
+        card.appendChild(h3);
+        card.appendChild(pre);
+        frag.appendChild(card);
+      }
+      els.grid.innerHTML = '';
+      els.grid.appendChild(frag);
+    }
+
+    function renderAll() {
+      renderMain();
+      renderGrid();
+    }
+
+    function restartTimer() {
+      if (state.timer) clearInterval(state.timer);
+      state.timer = setInterval(() => {
+        if (!state.playing) return;
+        state.tick += 1;
+        renderAll();
+      }, Number(els.tickMs.value));
+    }
+
+    function bindEvents() {
+      const rerender = () => renderAll();
+      ['species', 'eye', 'hat', 'rarity', 'mode', 'frame', 'hearts'].forEach(id => {
+        els[id].addEventListener('input', rerender);
+        els[id].addEventListener('change', rerender);
+      });
+
+      els.tickMs.addEventListener('change', () => {
+        restartTimer();
+        renderAll();
+      });
+
+      els.toggle.addEventListener('click', () => {
+        state.playing = !state.playing;
+        els.toggle.textContent = state.playing ? '暂停' : '播放';
+        renderAll();
+      });
+
+      els.burst.addEventListener('click', () => {
+        els.hearts.checked = true;
+        state.petStartTick = state.tick;
+        renderAll();
+      });
+
+      els.rollRarity.addEventListener('click', () => {
+        els.rarity.value = rollWeightedRarity();
+        renderAll();
+      });
+    }
+
+    async function loadBuddyData() {
+      const embedded = document.getElementById('buddy-json');
+      const embeddedText = embedded?.textContent?.trim();
+      if (embeddedText) {
+        return JSON.parse(embeddedText);
+      }
+
+      if (location.protocol === 'file:') {
+        throw new Error('未找到内嵌 JSON；当前是 file://，浏览器通常会阻止本地 fetch');
+      }
+
+      const res = await fetch('./all-buddy-sprites.json', { cache: 'no-store' });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return res.json();
+    }
+
+    async function init() {
+      try {
+        state.data = await loadBuddyData();
+
+        for (const rarity of RARITY_ORDER) {
+          const opt = document.createElement('option');
+          opt.value = rarity;
+          opt.textContent = `${RARITY_META[rarity].stars} ${rarity} (${RARITY_META[rarity].weight}%)`;
+          els.rarity.appendChild(opt);
+        }
+
+        for (const species of state.data.speciesOrder) {
+          const opt = document.createElement('option');
+          opt.value = species;
+          opt.textContent = `${capitalize(species)} (${species})`;
+          els.species.appendChild(opt);
+        }
+
+        for (const hat of Object.keys(state.data.hats)) {
+          const opt = document.createElement('option');
+          opt.value = hat;
+          opt.textContent = hat;
+          els.hat.appendChild(opt);
+        }
+
+        els.species.value = 'penguin';
+        els.hat.value = 'none';
+        els.rarity.value = 'epic';
+        els.tickMs.value = String(state.data.tickSettings.tickMs || 500);
+
+        bindEvents();
+        restartTimer();
+        renderAll();
+      } catch (err) {
+        console.error(err);
+        els.status.className = 'err';
+        els.status.textContent = `加载失败：${String(err)}。如果你是双击打开，请确认页面包含内嵌 JSON。`;
+      }
+    }
+
+    init();
+  </script>
+</body>
+</html>
